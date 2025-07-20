@@ -1,49 +1,44 @@
-import React from "react";
-import { Users, Book, LayoutDashboard } from "lucide-react";
+import { useEffect, useState } from 'react';
+import AdminLayout from "../components/AdminLayout";
+import axios from 'axios';
 
 export default function DashboardAdmin() {
+  const [stats, setStats] = useState({
+    totalCourses: 0,
+    totalModules: 0,
+    totalQuizzes: 0,
+    totalUsers: 0,
+  });
+
+  useEffect(() => {
+    axios.get('http://localhost:8000/api/stats')
+      .then((res) => setStats(res.data))
+      .catch((err) => console.error(err));
+  }, []);
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-100 to-white py-10 px-6">
-      <h1 className="text-3xl font-bold text-blue-800 mb-6">Dashboard Admin</h1>
+    <AdminLayout>
+      <h2 className="text-2xl font-bold mb-4">Dashboard Admin</h2>
+      <p className="mb-6">Selamat datang di panel admin EduLearnt!</p>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
-          <div className="flex items-center gap-4">
-            <LayoutDashboard className="text-blue-600 w-10 h-10" />
-            <div>
-              <p className="text-xl font-semibold">5</p>
-              <p className="text-gray-600">Total Modul</p>
-            </div>
-          </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="bg-blue-100 p-4 rounded shadow">
+          <h3 className="text-lg font-semibold">Total Kursus</h3>
+          <p className="text-2xl">{stats.totalCourses}</p>
         </div>
-
-        <div className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
-          <div className="flex items-center gap-4">
-            <Book className="text-orange-500 w-10 h-10" />
-            <div>
-              <p className="text-xl font-semibold">3</p>
-              <p className="text-gray-600">Kursus Aktif</p>
-            </div>
-          </div>
+        <div className="bg-green-100 p-4 rounded shadow">
+          <h3 className="text-lg font-semibold">Total Modul</h3>
+          <p className="text-2xl">{stats.totalModules}</p>
         </div>
-
-        <div className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition">
-          <div className="flex items-center gap-4">
-            <Users className="text-green-500 w-10 h-10" />
-            <div>
-              <p className="text-xl font-semibold">120</p>
-              <p className="text-gray-600">Siswa Terdaftar</p>
-            </div>
-          </div>
+        <div className="bg-yellow-100 p-4 rounded shadow">
+          <h3 className="text-lg font-semibold">Total Kuis</h3>
+          <p className="text-2xl">{stats.totalQuizzes}</p>
+        </div>
+        <div className="bg-purple-100 p-4 rounded shadow">
+          <h3 className="text-lg font-semibold">Total Pengguna</h3>
+          <p className="text-2xl">{stats.totalUsers}</p>
         </div>
       </div>
-
-      <div className="mt-10">
-        <h2 className="text-2xl font-semibold text-blue-700 mb-4">Statistik Aktivitas</h2>
-        <div className="bg-white p-6 rounded-xl shadow text-gray-500">
-          Grafik dan laporan aktivitas kursus siswa akan ditampilkan di sini.
-        </div>
-      </div>
-    </div>
+    </AdminLayout>
   );
 }

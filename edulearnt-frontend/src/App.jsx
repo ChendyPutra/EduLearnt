@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import Courses from './pages/Courses';
 import CourseDetail from './pages/CourseDetail';
@@ -9,24 +9,30 @@ import About from './pages/About';
 import NotFound from './pages/NotFound';
 
 import LoginUser from './pages/LoginUser';
-import RegisterUser from './pages/RegisterUser';          // ✅ Tambahkan
-import LoginAdmin from './pages/LoginAdmin';
+import RegisterUser from './pages/RegisterUser';
 import DashboardUser from './pages/DashboardUser';
-import DashboardAdmin from './pages/DashboardAdmin';      // ✅ Tambahkan
-import DashboardSuper from './pages/DashboardSuper';      // ✅ Tambahkan
 
-import AdminCourses from './pages/AdminCourses';          // ✅ Tambahkan
-import AdminCourseForm from './pages/AdminCourseForm';    // ✅ Tambahkan
-import AdminModules from './pages/AdminModules';          // ✅ Tambahkan
-import AdminModuleForm from './pages/AdminModuleForm';    // ✅ Tambahkan
+import LoginAdmin from './pages/LoginAdmin';
+import DashboardAdmin from './pages/DashboardAdmin';
+import DashboardSuper from './pages/DashboardSuper';
+
+import AdminCourses from './pages/AdminCourses';
+import AdminCourseForm from './pages/AdminCourseForm';
+import AdminModules from './pages/AdminModules';
+import AdminModuleForm from './pages/AdminModuleForm';
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import AdminManage from './pages/AdminManage'; 
 
 export default function App() {
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith('/admin');
+
   return (
     <>
-      <Navbar />
+      {/* Tampilkan Navbar & Footer hanya jika BUKAN halaman admin */}
+      {!isAdminRoute && <Navbar />}
 
       <Routes>
         {/* Public Routes */}
@@ -39,16 +45,15 @@ export default function App() {
         <Route path="/kit" element={<Kit />} />
         <Route path="/stats" element={<Stats />} />
         <Route path="/about" element={<About />} />
-
-        {/* User Dashboard */}
         <Route path="/dashboard" element={<DashboardUser />} />
 
-        {/* Admin Auth & Dashboards */}
+        {/* Admin Auth */}
         <Route path="/admin/login" element={<LoginAdmin />} />
+
+        {/* Admin routes – dibungkus dengan layout sendiri */}
         <Route path="/admin/dashboard" element={<DashboardAdmin />} />
         <Route path="/admin/super" element={<DashboardSuper />} />
-
-        {/* Admin Course & Module Management */}
+        <Route path="/admin/manage-admin" element={<AdminManage />} />
         <Route path="/admin/courses" element={<AdminCourses />} />
         <Route path="/admin/courses/create" element={<AdminCourseForm />} />
         <Route path="/admin/courses/:id/edit" element={<AdminCourseForm />} />
@@ -56,11 +61,12 @@ export default function App() {
         <Route path="/admin/courses/:courseId/modules/create" element={<AdminModuleForm />} />
         <Route path="/admin/courses/:courseId/modules/:id/edit" element={<AdminModuleForm />} />
 
-        {/* 404 */}
+        {/* Not Found */}
         <Route path="*" element={<NotFound />} />
       </Routes>
 
-      <Footer />
+      {/* Footer hanya ditampilkan di public routes */}
+      {!isAdminRoute && <Footer />}
     </>
   );
 }
