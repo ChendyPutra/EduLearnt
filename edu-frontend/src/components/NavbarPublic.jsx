@@ -26,9 +26,10 @@ export default function NavbarPublic() {
 
         <nav className="hidden md:flex items-center gap-1">
           <NavLink to="/" className={linkClass} end>Home</NavLink>
-          <NavLink to="/courses" className={linkClass}>Courses</NavLink>
+           <NavLink to="/courses-online" className={linkClass}>Courses Online</NavLink>
+          <NavLink to="/courses-offline" className={linkClass}>Courses Offline</NavLink>
           <NavLink to="/shop" className={linkClass}>Shop</NavLink>
-          <NavLink to="/about" className={linkClass}>About</NavLink>
+          <NavLink to="/company-profile" className={linkClass}>Company</NavLink>
         </nav>
 
         <div className="ml-auto flex items-center gap-2">

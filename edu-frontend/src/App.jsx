@@ -2,13 +2,10 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import NavbarPublic from "./components/NavbarPublic";
 import NavbarAdmin from "./components/NavbarAdmin";
 import Footer from "./components/Footer";
-import PublicLayout from "./layouts/PublicLayout";
-import AdminLayout from "./layouts/AdminLayout";
-import AuthLayout from "./layouts/AuthLayout";
 
 import Home from "./view/Home";
-import CoursesOnline from "./view/Courses";
-import CoursesOffline from "./view/CourseDetail";
+import CoursesOnline from "./view/CoursesOnline";
+import CoursesOffline from "./view/CoursesOffline";
 import Shop from "./view/Shop";
 import CompanyProfile from "./view/CompanyProfile";
 import LoginStudent from "./view/LoginStudent";
@@ -20,9 +17,7 @@ import ManageUsers from "./view/ManageUsers";
 import ManageCourses from "./view/ManageCourses";
 import ProtectedRoute from "./components/ProtectedRoute";
 
-function PublicShell() { return <PublicLayout><Outlet/></PublicLayout>; }
-function AdminShell() { return <AdminLayout><Outlet/></AdminLayout>; }
-function AuthShell() { return <AuthLayout><Outlet/></AuthLayout>; }
+
 
 function AppInner() {
   const location = useLocation();
