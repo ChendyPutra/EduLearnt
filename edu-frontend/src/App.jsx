@@ -1,65 +1,100 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import NavbarPublic from "./components/NavbarPublic";
+import NavbarAdmin from "./components/NavbarAdmin";
+import Footer from "./components/Footer";
+import PublicLayout from "./layouts/PublicLayout";
+import AdminLayout from "./layouts/AdminLayout";
+import AuthLayout from "./layouts/AuthLayout";
 
-// Components
-import Navbar from "./components/Navbar.jsx";
-import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import Home from "./view/Home";
+import CoursesOnline from "./view/Courses";
+import CoursesOffline from "./view/CourseDetail";
+import Shop from "./view/Shop";
+import CompanyProfile from "./view/CompanyProfile";
+import LoginStudent from "./view/LoginStudent";
+import LoginAdmin from "./view/LoginAdmin";
+import Register from "./view/Register";
+import DashboardStudent from "./view/DashboardStudent";
+import DashboardAdmin from "./view/DashboardAdmin";
+import ManageUsers from "./view/ManageUsers";
+import ManageCourses from "./view/ManageCourses";
+import ProtectedRoute from "./components/ProtectedRoute";
 
-// Pages
-import Home from "./view/Home.jsx";
-import Courses from "./view/Courses.jsx";
-import CourseDetail from "./view/CourseDetail.jsx";
-import Shop from "./view/Shop.jsx";
-import About from "./view/About.jsx";
-import Login from "./view/Login.jsx";
-import Register from "./view/Register.jsx";
-import DashboardStudent from "./view/DashboardStudent.jsx";
-import DashboardAdmin from "./view/DashboardAdmin.jsx";
-import ManageAdmins from "./view/ManageAdmins.jsx";
+function PublicShell() { return <PublicLayout><Outlet/></PublicLayout>; }
+function AdminShell() { return <AdminLayout><Outlet/></AdminLayout>; }
+function AuthShell() { return <AuthLayout><Outlet/></AuthLayout>; }
+
+function AppInner() {
+  const location = useLocation();
+  const role = localStorage.getItem("role");
+  const HIDE_NAV = ["/login", "/register", "/admin/login"];
+  const hideNav = HIDE_NAV.includes(location.pathname);
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      {!hideNav && (role === "admin" || role === "super_admin" ? <NavbarAdmin /> : <NavbarPublic />)}
+
+      <main className="container mx-auto px-4 py-6 flex-1">
+        <Routes>
+          {/* Public */}
+          <Route path="/" element={<Home />} />
+          <Route path="/courses-online" element={<CoursesOnline />} />
+          <Route path="/courses-offline" element={<CoursesOffline />} />
+          <Route path="/shop" element={<Shop />} />
+          <Route path="/company-profile" element={<CompanyProfile />} />
+
+          {/* Auth */}
+          <Route path="/login" element={<LoginStudent />} />
+          <Route path="/admin/login" element={<LoginAdmin />} />
+          <Route path="/register" element={<Register />} />
+
+          {/* Student */}
+          <Route
+            path="/dashboard-student"
+            element={
+              <ProtectedRoute allowedRoles={["student"]}>
+                <DashboardStudent />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Admin */}
+          <Route
+            path="/dashboard-admin"
+            element={
+              <ProtectedRoute allowedRoles={["admin", "super_admin"]}>
+                <DashboardAdmin />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/manage-users"
+            element={
+              <ProtectedRoute allowedRoles={["super_admin"]}>
+                <ManageUsers />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/manage-courses"
+            element={
+              <ProtectedRoute allowedRoles={["admin", "super_admin"]}>
+                <ManageCourses />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </main>
+
+      {!hideNav && <Footer />}
+    </div>
+  );
+}
 
 export default function App() {
   return (
     <BrowserRouter>
-      <Navbar />
-      <Routes>
-        {/* Public */}
-        <Route path="/" element={<Home />} />
-        <Route path="/courses" element={<Courses />} />
-        <Route path="/courses/:id" element={<CourseDetail />} />
-        <Route path="/shop" element={<Shop />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-
-        {/* Student Protected */}
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute allowedRoles={["student"]}>
-              <DashboardStudent />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* Admin Protected */}
-        <Route
-          path="/admin/dashboard"
-          element={
-            <ProtectedRoute allowedRoles={["admin", "superadmin"]}>
-              <DashboardAdmin />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* Super Admin Only */}
-        <Route
-          path="/admin/manage-admins"
-          element={
-            <ProtectedRoute allowedRoles={["superadmin"]}>
-              <ManageAdmins />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
+      <AppInner />
     </BrowserRouter>
   );
 }

@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root { color-scheme: light; }
+
+@layer base {
+  body { @apply bg-white text-gray-800; }
+}
+
+@layer components {
+  .btn { @apply inline-flex items-center justify-center px-4 py-2 rounded-xl font-medium transition; }
+  .btn-primary { @apply bg-blue-600 text-white hover:bg-blue-700; }
+  .btn-outline { @apply border border-gray-300 hover:bg-gray-50; }
+  .badge { @apply inline-block px-2 py-0.5 rounded-full text-xs font-semibold; }
+}

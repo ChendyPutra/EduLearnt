@@ -10,9 +10,12 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-    protected $fillable = [
-        'name','email','password','role','avatar'
-    ];
+   protected $fillable = [
+    'name',
+    'email',
+    'password',
+    'role',
+];
 
     
     protected $hidden = [
@@ -22,4 +25,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function isAdmin()
+{
+    return in_array($this->role, ['admin','super_admin']);
+}
+
+public function isSuperAdmin()
+{
+    return $this->role === 'super_admin';
+}
 }
