@@ -2,18 +2,19 @@
 
 namespace Database\Seeders;
 
+use App\Models\Admin;
 use Illuminate\Database\Seeder;
-use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 class AdminSeeder extends Seeder
 {
     public function run(): void
     {
-        User::create([
-            'name' => 'Super Admin',
-            'email' => 'admin@edulearnt.com',
-            'password' => Hash::make('password'),
+        Admin::create([
+            'name' => 'chendy',
+            'email' => 'chendy@gmail.com',
+            'password' => Hash::make('apaaja11'),
+            'role' => 'super_admin'
         ]);
     }
 }

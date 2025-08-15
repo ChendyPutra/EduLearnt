@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function Footer() {
   return (
     <footer className="mt-16 bg-slate-900 text-slate-300">
@@ -9,28 +11,29 @@ export default function Footer() {
         <div>
           <h4 className="text-white font-semibold mb-3">Navigasi</h4>
           <ul className="space-y-2 text-sm">
-           <li><a to="/courses-online" className="hover:text-blue-700">Courses Online</a></li>
-          <li><a to="/courses-offline" className="hover:text-blue-700">Courses Offline</a></li>
-          <li><a to="/shop" className="hover:text-blue-700">Shop</a></li>
-          <li><a to="/company-profile" className="hover:text-blue-700">Company</a></li>
+            <li><Link to="/courses-online" className="hover:text-blue-400">Courses Online</Link></li>
+            <li><Link to="/courses-offline" className="hover:text-blue-400">Courses Offline</Link></li>
+            <li><Link to="/shop" className="hover:text-blue-400">Shop</Link></li>
+            <li><Link to="/company-profile" className="hover:text-blue-400">Company</Link></li>
           </ul>
         </div>
         <div>
-          <h4 className="text-white font-semibold mb-3">Bantuan</h4>
+          <h4 className="text-white font-semibold mb-3">Produk</h4>
           <ul className="space-y-2 text-sm">
-            <li><a href="#" className="hover:text-white">FAQ</a></li>
-            <li><a href="#" className="hover:text-white">Kontak</a></li>
+            <li><a href="https://shopee.co.id" className="hover:text-blue-400" target="_blank" rel="noreferrer">Shopee</a></li>
+            <li><a href="https://www.tokopedia.com" className="hover:text-blue-400" target="_blank" rel="noreferrer">Tokopedia</a></li>
           </ul>
         </div>
         <div>
-          <h4 className="text-white font-semibold mb-3">Berlangganan</h4>
-          <form className="flex gap-2">
-            <input className="flex-1 rounded-xl bg-slate-800 border border-slate-700 px-3 py-2 text-sm placeholder-slate-400" placeholder="Email kamu" />
-            <button className="px-4 py-2 rounded-xl bg-indigo-600 text-white hover:bg-indigo-500">Kirim</button>
-          </form>
+          <h4 className="text-white font-semibold mb-3">Contact</h4>
+          <ul className="space-y-2 text-sm">
+            <li>Email: hello@edulearnt.id</li>
+            <li>Phone: +62 812-0000-0000</li>
+            <li><Link to="/contact" className="hover:text-blue-400">Feedback & Inquiry</Link></li>
+          </ul>
         </div>
       </div>
-      <div className="border-t border-white/10 py-4 text-center text-xs text-slate-400">© {new Date().getFullYear()} EduLearnt</div>
+      <div className="bg-black text-center text-xs py-3">© {new Date().getFullYear()} EduLearnt. All rights reserved.</div>
     </footer>
   );
 }
