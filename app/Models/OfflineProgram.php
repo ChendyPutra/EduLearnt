@@ -6,6 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class OfflineProgram extends Model
 {
-     protected $fillable = ['school','schedule','city'];
+     protected $fillable = ['school', 'schedule', 'city'];
     protected $table = 'offline_programs';
 }

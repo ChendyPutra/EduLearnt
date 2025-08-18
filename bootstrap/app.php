@@ -16,6 +16,11 @@ return Application::configure(basePath: dirname(__DIR__))
         'role' => \App\Http\Middleware\CheckRole::class,
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
     ]);
+    
+    // Add CORS middleware for API routes
+    $middleware->api(prepend: [
+        \Illuminate\Http\Middleware\HandleCors::class,
+    ]);
 })
 
     ->withExceptions(function (Exceptions $exceptions): void {

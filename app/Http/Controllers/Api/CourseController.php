@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Course;
+use App\Http\Requests\CourseRequest;
 
 class CourseController extends Controller
 {
@@ -22,17 +23,23 @@ class CourseController extends Controller
         return response()->json($course);
     }
 
-    public function store(Request $request)
+    public function store(CourseRequest $request)
     {
-        // simple admin create (validate minimal)
-        $request->validate([
-            'title' => 'required|string',
-            'description' => 'nullable|string',
-            'youtube_id' => 'nullable|string',
-            'level' => 'nullable|string',
-        ]);
-
-        $course = Course::create($request->only(['title','description','youtube_id','level']));
+        $course = Course::create($request->validated());
         return response()->json($course, 201);
+    }
+
+    public function update(CourseRequest $request, $id)
+    {
+        $course = Course::findOrFail($id);
+        $course->update($request->validated());
+        return response()->json($course);
+    }
+
+    public function destroy($id)
+    {
+        $course = Course::findOrFail($id);
+        $course->delete();
+        return response()->json(['message' => 'Course deleted successfully']);
     }
 }

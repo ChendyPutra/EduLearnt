@@ -15,13 +15,33 @@ class OfflineProgramController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'school' => 'required|string',
-            'schedule' => 'required|string',
-            'city' => 'required|string',
+            'schedule' => 'nullable|string',
+            'city' => 'nullable|string',
         ]);
 
-        $p = OfflineProgram::create($request->only(['school','schedule','city']));
-        return response()->json($p, 201);
+        $program = OfflineProgram::create($data);
+        return response()->json($program, 201);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $program = OfflineProgram::findOrFail($id);
+        $data = $request->validate([
+            'school' => 'sometimes|string',
+            'schedule' => 'sometimes|string',
+            'city' => 'sometimes|string',
+        ]);
+        
+        $program->update($data);
+        return response()->json($program);
+    }
+
+    public function destroy($id)
+    {
+        $program = OfflineProgram::findOrFail($id);
+        $program->delete();
+        return response()->json(['message' => 'Program deleted successfully']);
     }
 }

@@ -4,37 +4,97 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Admin; // <-- UBAH INI dari User menjadi Admin
+use App\Models\Admin;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class AdminAuthController extends Controller
 {
+    public function index()
+    {
+        $admins = Admin::where('role', 'admin')->get();
+        return response()->json($admins);
+    }
+
+    // Create admin (hanya super_admin)
+    public function store(Request $request)
+    {
+        // $this->authorize('isSuperAdmin'); // Buat policy jika perlu
+        $data = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email|unique:admins',
+            'password' => 'required|string|min:6',
+        ]);
+        $data['role'] = 'admin';
+        $data['password'] = bcrypt($data['password']);
+        $admin = Admin::create($data);
+        return response()->json($admin, 201);
+    }
+
+    // Update admin
+    public function update(Request $request, $id)
+    {
+        $admin = Admin::where('role', 'admin')->findOrFail($id);
+        $data = $request->validate([
+            'name' => 'sometimes|string',
+            'email' => 'sometimes|email|unique:admins,email,'.$id,
+            'password' => 'sometimes|string|min:6',
+        ]);
+        if(isset($data['password'])) $data['password'] = bcrypt($data['password']);
+        $admin->update($data);
+        return response()->json($admin);
+    }
+
+    // Delete admin
+    public function destroy($id)
+    {
+        $admin = Admin::where('role', 'admin')->findOrFail($id);
+        $admin->delete();
+        return response()->json(['message' => 'Deleted']);
+    }
+
     // Login Admin & Super Admin
     public function login(Request $request)
     {
-        $data = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string',
-        ]);
+        try {
+            $data = $request->validate([
+                'email' => 'required|email',
+                'password' => 'required|string',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
+        }
 
-        // UBAH INI dari User menjadi Admin
         $admin = Admin::where('email', $data['email'])->first();
 
-        if (!$admin || !Hash::check($data['password'], $admin->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
+        if (!$admin) {
+            return response()->json([
+                'message' => 'Email tidak ditemukan'
+            ], 422);
+        }
+
+        if (!Hash::check($data['password'], $admin->password)) {
+            return response()->json([
+                'message' => 'Password salah'
+            ], 422);
         }
 
         if (!in_array($admin->role, ['admin', 'super_admin'])) {
-            return response()->json(['message' => 'Unauthorized for admin login'], 403);
+            return response()->json([
+                'message' => 'Akun ini tidak memiliki akses admin'
+            ], 403);
         }
 
         $token = $admin->createToken('api-token', ['admin'])->plainTextToken;
 
+        // Hindari mengirim password hash ke frontend
+        $userData = $admin->only(['id', 'name', 'email', 'role']);
+
         return response()->json([
-            'user' => $admin,
+            'user' => $userData,
             'token' => $token
         ]);
     }
@@ -42,21 +102,28 @@ class AdminAuthController extends Controller
     // Logout
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        if ($request->user() && $request->user()->currentAccessToken()) {
+            $request->user()->currentAccessToken()->delete();
+        }
         return response()->json(['message' => 'Logged out']);
     }
 
     // Profil Admin
     public function me(Request $request)
     {
-        return response()->json($request->user());
+        // Hindari mengirim password hash ke frontend
+        return response()->json($request->user()->only(['id', 'name', 'email', 'role']));
     }
 
     // Daftar User (Hanya Super Admin)
-    public function getUsers()
+    public function getUsers(Request $request)
     {
-        $this->authorize('isSuperAdmin'); // pastikan pakai Gate atau middleware role
-        // UBAH INI juga dari User menjadi Admin
-        return response()->json(Admin::all());
+        // Gunakan middleware pada route, atau pastikan Gate sudah diatur
+        if ($request->user()->role !== 'super_admin') {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
+        // Hindari mengirim password hash ke frontend
+        $admins = Admin::select('id', 'name', 'email', 'role')->get();
+        return response()->json($admins);
     }
 }

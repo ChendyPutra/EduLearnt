@@ -35,4 +35,16 @@ public function isSuperAdmin()
 {
     return $this->role === 'super_admin';
 }
+
+public function progress()
+{
+    return $this->hasMany(UserProgress::class);
+}
+
+public function enrolledCourses()
+{
+    return $this->belongsToMany(Course::class, 'user_progress')
+                ->withPivot('progress_percentage', 'completed', 'completed_at')
+                ->withTimestamps();
+}
 }

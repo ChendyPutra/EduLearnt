@@ -10,6 +10,54 @@ use Illuminate\Validation\ValidationException;
 
 class StudentAuthController extends Controller
 {
+     public function index(Request $request)
+    {
+        $validated = $request->validate([
+            'role' => 'nullable|in:student,teacher,parent'
+        ]);
+        
+        $users = isset($validated['role']) 
+            ? User::where('role', $validated['role'])->get() 
+            : User::all();
+        return response()->json($users);
+    }
+
+    // Create user
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|string|min:6',
+            'role' => 'required|in:student,teacher,parent',
+        ]);
+        $data['password'] = bcrypt($data['password']);
+        $user = User::create($data);
+        return response()->json($user, 201);
+    }
+
+    // Update user
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $data = $request->validate([
+            'name' => 'sometimes|string',
+            'email' => 'sometimes|email|unique:users,email,'.$id,
+            'password' => 'sometimes|string|min:6',
+            'role' => 'sometimes|in:student,teacher,parent',
+        ]);
+        if(isset($data['password'])) $data['password'] = bcrypt($data['password']);
+        $user->update($data);
+        return response()->json($user);
+    }
+
+    // Delete user
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+        return response()->json(['message' => 'Deleted']);
+    }
     // Register siswa
     public function register(Request $request)
     {
@@ -29,7 +77,7 @@ class StudentAuthController extends Controller
         $token = $user->createToken('student-token', ['student'])->plainTextToken;
 
         return response()->json([
-            'user' => $user,
+            'user' => $user->only(['id', 'name', 'email', 'role']),
             'token' => $token
         ], 201);
     }
@@ -57,7 +105,7 @@ class StudentAuthController extends Controller
         $token = $user->createToken('student-token', ['student'])->plainTextToken;
 
         return response()->json([
-            'user' => $user,
+            'user' => $user->only(['id', 'name', 'email', 'role']),
             'token' => $token
         ]);
     }
@@ -70,6 +118,6 @@ class StudentAuthController extends Controller
 
     public function me(Request $request)
     {
-        return response()->json($request->user());
+        return response()->json($request->user()->only(['id', 'name', 'email', 'role']));
     }
 }
