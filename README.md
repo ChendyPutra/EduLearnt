@@ -1,61 +1,54 @@
-📘 EduLearnt – Platform Pembelajaran Teknologi
-<p align="center"> <img src="https://img.shields.io/badge/Laravel-11-red?style=flat-square&logo=laravel" /> <img src="https://img.shields.io/badge/React-18-blue?style=flat-square&logo=react" /> <img src="https://img.shields.io/badge/Vite-Build-green?style=flat-square&logo=vite" /> <img src="https://img.shields.io/badge/MySQL-Database-orange?style=flat-square&logo=mysql" /> <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" /> </p>
-📖 Tentang EduLearnt
+🎓 EduLearnt
 
-EduLearnt adalah platform pembelajaran berbasis website untuk mendukung proses belajar coding, artificial intelligence (AI), dan robotika sejak SD, SMP, hingga SMA.
-Sistem ini mencakup kursus online, informasi kursus offline, toko edukasi (EduLearnKit), dashboard siswa/admin, serta profil perusahaan & kemitraan.
+Belajar Coding, AI & Robotika sejak dini – interaktif, menyenangkan, dan mudah diakses.
 
-🚀 Fitur Utama
-👀 Pengunjung Umum
+<p align="center"> <img src="docs/images/banner.png" alt="EduLearnt Banner" width="85%" /> </p> <p align="center"> <img src="https://img.shields.io/badge/Laravel-11-FF2D20?style=for-the-badge&logo=laravel" /> <img src="https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react" /> <img src="https://img.shields.io/badge/Vite-Build-646CFF?style=for-the-badge&logo=vite" /> <img src="https://img.shields.io/badge/MySQL-Database-4479A1?style=for-the-badge&logo=mysql" /> <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" /> </p>
+🎥 Demo
+<p align="center"> <a href="https://youtu.be/demo-link" target="_blank"> <img src="docs/images/demo-preview.gif" alt="EduLearnt Demo" width="75%"> </a> </p>
+✨ Fitur Utama
+👀 Pengunjung
 
-Melihat homepage & deskripsi kursus
+Lihat kursus & profil perusahaan
 
-Mengakses toko online (kit belajar & alat bantu)
-
-Melihat profil perusahaan & kemitraan
+Akses toko online EduLearnKit
 
 Registrasi akun
 
-👩‍🎓 User Terdaftar (Student)
+👩‍🎓 Siswa
 
-Akses course online sesuai jenjang & topik
+Akses course online (materi, video YouTube, kuis)
 
-Tracking progres belajar per modul
+Dashboard progres belajar
 
-Dashboard siswa (kursus aktif & progres)
+Kuis, latihan, ujian
 
-Kuis, latihan, ujian (struktur sudah ada)
+Info course offline
 
-Informasi produk kit & kemitraan
-
-👨‍💻 Administrator
+👨‍💻 Admin
 
 Manajemen pengguna (siswa, guru, orang tua)
 
 Kelola course online & offline
 
-Kelola produk toko online & integrasi marketplace
+Kelola produk toko EduLearnKit
 
-Dashboard admin dengan statistik & laporan
+Dashboard statistik & laporan
 
-Review feedback & kemitraan
+Feedback & kemitraan
 
-🛠️ Teknologi
+📸 Tampilan
+Homepage & Dashboard
+<p align="center"> <img src="docs/screenshots/homepage.png" width="45%" /> <img src="docs/screenshots/dashboard.png" width="45%" /> </p>
+Course Online
+<p align="center"> <img src="docs/screenshots/course-list.png" width="45%" /> <img src="docs/screenshots/course-detail.png" width="45%" /> </p>
+Admin Panel
+<p align="center"> <img src="docs/screenshots/admin-dashboard.png" width="45%" /> <img src="docs/screenshots/admin-courses.png" width="45%" /> </p>
+🛠 Teknologi
 
-Backend
+Backend: Laravel 11, MySQL, Laravel Sanctum
 
-Laravel 11
+Frontend: React 18, Vite, TailwindCSS
 
-MySQL / SQLite
+API: RESTful API (Auth, Course, Product, Feedback)
 
-Laravel Sanctum (Authentication)
-
-RESTful API
-
-Frontend
-
-React 18 + Vite
-
-Tailwind CSS
-
-React Router
+Security: CSRF/XSS protection, role-based access, password hashing
