@@ -47,8 +47,9 @@ Belajar Coding, AI & Robotika sejak dini – interaktif, menyenangkan, dan mudah
 </p>
 <p align="center">
   <img src="https://drive.google.com/uc?export=view&id=175n71L1SFxec9eQIiEDU2_dIj9Ss0t3O" width="45%" />
-<img src="https://drive.google.com/uc?export=view&id=11Idhjgxjlh3wQuqwX98QZWb6Mjxuyqs0" width="45%" />
+  <img src="https://drive.google.com/uc?export=view&id=11Idhjgxjlh3wQuqwX98QZWb6Mjxuyqs0" width="45%" />
 </p>
+
 
 ---
 
@@ -94,4 +95,5 @@ Belajar Coding, AI & Robotika sejak dini – interaktif, menyenangkan, dan mudah
 - **Backend:** Laravel 12, MySQL, Laravel Sanctum  
 - **Frontend:** React 18, Vite, TailwindCSS  
 - **API:** RESTful API (Auth, Course, Product, Feedback)  
-- **Keamanan:** CSRF/XSS protection, role-based access, password hashing  
+- **Keamanan:** CSRF/XSS protection, role-based access, password hashing
+- link google drive https://drive.google.com/drive/folders/11rmGe7SnO1B2YsLlclfVy6NxMPyBXr6j?usp=sharing
